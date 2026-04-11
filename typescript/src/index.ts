@@ -26,7 +26,7 @@
  *          calcularConImpuesto(99.99, 10) === 109.99
  */
 export function calcularConImpuesto(base: number, tasa: number): number {
-  throw new Error("No implementado");
+  return Math.round(base * (1 + tasa / 100) * 100) / 100;
 }
 
 /**
@@ -41,7 +41,10 @@ export function agruparPorParidad(nums: number[]): {
   pares: number[];
   impares: number[];
 } {
-  throw new Error("No implementado");
+  return {
+    pares: nums.filter((n) => n % 2 === 0),
+    impares: nums.filter((n) => n % 2 !== 0),
+  };
 }
 
 /**
@@ -54,7 +57,9 @@ export function agruparPorParidad(nums: number[]): {
  * Ejemplo: fibonacci(10) === 55
  */
 export function fibonacci(n: number): number {
-  throw new Error("No implementado");
+  if (n === 0) return 0;
+  if (n === 1) return 1;
+  return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 /**
@@ -75,7 +80,12 @@ export function validarContrasena(pass: string): {
   valida: boolean;
   errores: string[];
 } {
-  throw new Error("No implementado");
+  const errores: string[] = [
+    ...(pass.length < 8 ? ["Debe tener al menos 8 caracteres"] : []),
+    ...(!/[A-Z]/.test(pass) ? ["Debe contener al menos una letra mayúscula"] : []),
+    ...(!/[0-9]/.test(pass) ? ["Debe contener al menos un dígito"] : []),
+  ];
+  return { valida: errores.length === 0, errores}
 }
 
 /**
@@ -91,7 +101,7 @@ export function componerNombre(
   apellido: string,
   titulo?: string
 ): string {
-  throw new Error("No implementado");
+  return !!titulo ? `${titulo} ${nombre} ${apellido}` : `${nombre} ${apellido}`
 }
 
 // ─── GRUPO 2: Inmutabilidad ───────────────────────────────────────────────
@@ -104,7 +114,7 @@ export function componerNombre(
  *          El array original NO debe cambiar.
  */
 export function agregarElemento<T>(arr: readonly T[], elemento: T): T[] {
-  throw new Error("No implementado");
+  return [...arr, elemento]
 }
 
 /**
@@ -116,7 +126,7 @@ export function agregarElemento<T>(arr: readonly T[], elemento: T): T[] {
  *          eliminarPorIndice([10,20,30], 99)   → [10,20,30]
  */
 export function eliminarPorIndice<T>(arr: readonly T[], indice: number): T[] {
-  throw new Error("No implementado");
+  return arr.filter((e, indx) => indx !== indice )
 }
 
 /**
@@ -132,20 +142,21 @@ export function actualizarPrecio(
   producto: { nombre: string; precio: number; [key: string]: unknown },
   nuevoPrecio: number
 ): { nombre: string; precio: number; [key: string]: unknown } {
-  throw new Error("No implementado");
+  return {...producto, precio: nuevoPrecio}
 }
 
-/**
- * TS-09: Retorna el array ordenado ASCENDENTEMENTE sin mutar el original.
- * ADVERTENCIA: Array.prototype.sort() muta in-place — no se puede usar directamente.
- * Pista: crear copia antes de ordenar.
- *
- * Ejemplo: ordenarSinMutar([3,1,4,1,5,9,2,6]) → [1,1,2,3,4,5,6,9]
- *          El array original NO debe cambiar.
- */
-export function ordenarSinMutar(nums: readonly number[]): number[] {
-  throw new Error("No implementado");
-}
+  /**
+   * TS-09: Retorna el array ordenado ASCENDENTEMENTE sin mutar el original.
+   * ADVERTENCIA: Array.prototype.sort() muta in-place — no se puede usar directamente.
+   * Pista: crear copia antes de ordenar.
+   *
+   * Ejemplo: ordenarSinMutar([3,1,4,1,5,9,2,6]) → [1,1,2,3,4,5,6,9]
+   *          El array original NO debe cambiar.
+   */
+  export function ordenarSinMutar(nums: readonly number[]): number[] {
+    const arr = [...nums]
+    return arr.sort((a,b) => a - b)
+  }
 
 /**
  * TS-10: Aplica un descuento porcentual a todos los productos.
@@ -161,7 +172,7 @@ export function aplicarDescuentoRegistros(
   productos: readonly { nombre: string; precio: number }[],
   porcentaje: number
 ): { nombre: string; precio: number }[] {
-  throw new Error("No implementado");
+  return productos.map((p) => ({ ...p, precio: Math.round((p.precio - (p.precio * porcentaje/100)) * 100) / 100}))
 }
 
 // ─── GRUPO 3: map / filter / reduce ───────────────────────────────────────
@@ -173,7 +184,7 @@ export function aplicarDescuentoRegistros(
  * Ejemplo: soloMayusculas(["hola", "mundo"]) → ["HOLA", "MUNDO"]
  */
 export function soloMayusculas(nombres: string[]): string[] {
-  throw new Error("No implementado");
+  return nombres.map((s) => s.toUpperCase())
 }
 
 /**
@@ -188,7 +199,7 @@ export function productosBaratos(
   productos: { nombre: string; precio: number }[],
   precioMax: number
 ): { nombre: string; precio: number }[] {
-  throw new Error("No implementado");
+  return productos.filter(p => p.precio <= precioMax)
 }
 
 /**
@@ -199,7 +210,7 @@ export function productosBaratos(
  * Ejemplo: sumaTotal([1,2,3,4,5]) === 15
  */
 export function sumaTotal(nums: number[]): number {
-  throw new Error("No implementado");
+  return nums.reduce((acc,x) => acc + x, 0)
 }
 
 /**
@@ -211,7 +222,10 @@ export function sumaTotal(nums: number[]): number {
  *          contarPalabras("") → {}
  */
 export function contarPalabras(texto: string): Record<string, number> {
-  throw new Error("No implementado");
+  return texto.split(" ").filter(e => e !== "").reduce((acc,x) => ({
+      ...acc, 
+      [x]: (acc[x] || 0) + 1 
+  }), {} as Record<string, number>)
 }
 
 /**
@@ -225,7 +239,7 @@ export function contarPalabras(texto: string): Record<string, number> {
  *          sumaFiltradosAlCuadrado([1,2,3], 10) === 0  (ninguno supera umbral)
  */
 export function sumaFiltradosAlCuadrado(nums: number[], umbral: number): number {
-  throw new Error("No implementado");
+  return nums.filter(n => n > umbral).map(n => n**2).reduce((acc,n) => acc + n,0)
 }
 
 /**
@@ -240,7 +254,7 @@ export function sumaFiltradosAlCuadrado(nums: number[], umbral: number): number 
 export function promedioAprobados(
   estudiantes: { nombre: string; nota: number }[]
 ): number {
-  throw new Error("No implementado");
+  return estudiantes.filter((e) => e.nota >= 6).map(n => n.nota).reduce((acc,x, _ ,arr) => acc + x / arr.length, 0)
 }
 
 /**
@@ -249,7 +263,7 @@ export function promedioAprobados(
  * SIN loops. SIN reduce manual de aplanamiento.
  */
 export function aplanarLista<T>(listas: T[][]): T[] {
-  throw new Error("No implementado");
+  return listas.flatMap((e) => e)
 }
 
 /**
@@ -267,7 +281,7 @@ export function aplanarLista<T>(listas: T[][]): T[] {
 export function totalVentasCredito(
   transacciones: { monto: number; tipo: "credito" | "debito" }[]
 ): number {
-  throw new Error("No implementado");
+  return transacciones.filter(e => e.tipo === "credito" && e.monto > 100).map(e => e.monto).reduce((acc,x) => acc + x, 0)
 }
 
 // ─── GRUPO 4: Composición y HOF ────────────────────────────────────────────
